@@ -5,12 +5,15 @@ from app.config import get_settings
 
 settings = get_settings()
 
+# Use check_same_thread=False for SQLite (required for async use)
+connect_args = {}
+if settings.database_url.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
+
 engine = create_async_engine(
     settings.database_url,
     echo=settings.debug,
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
+    connect_args=connect_args,
 )
 
 async_session_factory = async_sessionmaker(

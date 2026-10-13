@@ -1,13 +1,13 @@
 import uuid
 from datetime import datetime
+from typing import Optional
+import enum
 
 from sqlalchemy import Integer, String, Text, ForeignKey, DateTime, Enum as SAEnum, func
-from sqlalchemy.dialects.postgresql import UUID, JSON
+from sqlalchemy import JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
-
-import enum
 
 
 class VocabStatus(str, enum.Enum):
@@ -19,8 +19,8 @@ class VocabStatus(str, enum.Enum):
 class VocabularyGroup(Base):
     __tablename__ = "vocabulary_groups"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
     )
     day_number: Mapped[int] = mapped_column(
         Integer, ForeignKey("curriculum_days.day_number"), nullable=False, index=True
@@ -37,18 +37,18 @@ class VocabularyGroup(Base):
 class VocabPracticeEntry(Base):
     __tablename__ = "vocab_practice_entries"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
     )
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True
+    user_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), nullable=False, index=True
     )
-    group_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("vocabulary_groups.id"), nullable=False, index=True
+    group_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("vocabulary_groups.id"), nullable=False, index=True
     )
     user_sentence: Mapped[str] = mapped_column(Text, nullable=False)
     status: Mapped[str] = mapped_column(
-        SAEnum(VocabStatus, name="vocab_status", create_constraint=True),
+        SAEnum(VocabStatus, name="vocab_status"),
         default=VocabStatus.PRACTICED,
     )
     created_at: Mapped[datetime] = mapped_column(

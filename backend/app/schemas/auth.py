@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 
 
 # ── Auth ─────────────────────────────────────────────────────────────────────
@@ -22,7 +22,7 @@ class TokenResponse(BaseModel):
 
 
 class UserResponse(BaseModel):
-    id: uuid.UUID
+    id: str
     name: str
     email: str
     current_day: int

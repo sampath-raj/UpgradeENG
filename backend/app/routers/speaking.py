@@ -48,7 +48,7 @@ async def speaking_chat(
     reply = await ai_coach.speaking_chat(claude_messages, day_topic, body.mode)
 
     # Create or update session
-    session_id = body.session_id or uuid.uuid4()
+    session_id = body.session_id or str(uuid.uuid4())
 
     if body.session_id:
         # Update existing session

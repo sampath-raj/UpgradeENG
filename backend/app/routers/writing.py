@@ -1,5 +1,5 @@
 import logging
-from uuid import UUID
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, Request
 from slowapi import Limiter
@@ -101,7 +101,7 @@ async def submit_writing(
 
 @router.get("/history", response_model=list[WritingHistoryItem])
 async def get_writing_history(
-    day_number: int | None = None,
+    day_number: Optional[int] = None,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
@@ -126,7 +126,7 @@ async def get_submission(
     """Get a specific writing submission with its correction."""
     result = await db.execute(
         select(WritingSubmission).where(
-            WritingSubmission.id == UUID(submission_id),
+            WritingSubmission.id == submission_id,
             WritingSubmission.user_id == user.id,
         )
     )

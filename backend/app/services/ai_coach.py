@@ -8,6 +8,7 @@ Provides two strictly separated modes:
 
 import json
 import logging
+from typing import Optional
 from anthropic import AsyncAnthropic
 
 from app.config import get_settings
@@ -15,7 +16,7 @@ from app.config import get_settings
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
-_client: AsyncAnthropic | None = None
+_client: Optional[AsyncAnthropic] = None
 
 
 def _get_client() -> AsyncAnthropic:

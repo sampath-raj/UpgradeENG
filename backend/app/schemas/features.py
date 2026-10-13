@@ -1,7 +1,6 @@
 from typing import Optional
-import uuid
-from datetime import datetime
 from pydantic import BaseModel, Field
+from datetime import datetime
 
 
 # ── Writing ──────────────────────────────────────────────────────────────────
@@ -19,7 +18,7 @@ class WritingSubmitRequest(BaseModel):
 
 
 class WritingCorrectionResponse(BaseModel):
-    id: uuid.UUID
+    id: str
     day_number: int
     original_text: str
     blocks: list[CorrectionBlock]
@@ -29,10 +28,10 @@ class WritingCorrectionResponse(BaseModel):
 
 
 class WritingHistoryItem(BaseModel):
-    id: uuid.UUID
+    id: str
     day_number: int
     original_text: str
-    correction_json: Optional[dict]
+    correction_json: Optional[dict] = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -49,16 +48,16 @@ class SpeakingChatRequest(BaseModel):
     day_number: int
     mode: str
     messages: list[ChatMessage]
-    session_id: uuid.UUID | None = None
+    session_id: Optional[str] = None
 
 
 class SpeakingChatResponse(BaseModel):
-    session_id: uuid.UUID
+    session_id: str
     reply: str
 
 
 class SpeakingEndRequest(BaseModel):
-    session_id: uuid.UUID
+    session_id: str
     messages: list[ChatMessage]
 
 
@@ -70,38 +69,38 @@ class MockInterviewStartRequest(BaseModel):
 
 
 class MockInterviewStartResponse(BaseModel):
-    interview_id: uuid.UUID
+    interview_id: str
     first_question: str
 
 
 class MockInterviewRespondRequest(BaseModel):
-    interview_id: uuid.UUID
+    interview_id: str
     user_answer: str
 
 
 class MockInterviewRespondResponse(BaseModel):
-    next_question: Optional[str]
+    next_question: Optional[str] = None
     is_complete: bool
 
 
 class ScoreDetail(BaseModel):
-    grammar: int | None
-    vocabulary: int | None
-    fluency: int | None
-    pronunciation: int | None = None
-    confidence: int | None = None
-    structure: int | None
-    overall: int | None
+    grammar: Optional[int] = None
+    vocabulary: Optional[int] = None
+    fluency: Optional[int] = None
+    pronunciation: Optional[int] = None
+    confidence: Optional[int] = None
+    structure: Optional[int] = None
+    overall: Optional[int] = None
     pronunciation_note: Optional[str] = "voice mode required"
     confidence_note: Optional[str] = "voice mode required"
 
 
 class MockInterviewFinishRequest(BaseModel):
-    interview_id: uuid.UUID
+    interview_id: str
 
 
 class MockInterviewFinishResponse(BaseModel):
-    interview_id: uuid.UUID
+    interview_id: str
     scores: ScoreDetail
     feedback: str
     transcript: list[ChatMessage]
@@ -132,6 +131,5 @@ class ScoreTrendPoint(BaseModel):
 
 
 class ComparisonResponse(BaseModel):
-    baseline: MockInterviewFinishResponse | None
-    final: MockInterviewFinishResponse | None
-
+    baseline: Optional[MockInterviewFinishResponse] = None
+    final: Optional[MockInterviewFinishResponse] = None

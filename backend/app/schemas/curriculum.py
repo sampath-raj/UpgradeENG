@@ -1,5 +1,4 @@
 from typing import Optional
-import uuid
 from pydantic import BaseModel
 
 
@@ -19,7 +18,7 @@ class CurriculumDayResponse(BaseModel):
 
 
 class VocabularyGroupResponse(BaseModel):
-    id: uuid.UUID
+    id: str
     day_number: int
     headword: str
     phrases: list[str]
@@ -29,13 +28,13 @@ class VocabularyGroupResponse(BaseModel):
 
 
 class VocabPracticeRequest(BaseModel):
-    group_id: uuid.UUID
+    group_id: str
     user_sentence: str
 
 
 class VocabPracticeResponse(BaseModel):
-    id: uuid.UUID
-    group_id: uuid.UUID
+    id: str
+    group_id: str
     user_sentence: str
     status: str
     feedback: Optional[str] = None
@@ -44,13 +43,12 @@ class VocabPracticeResponse(BaseModel):
 
 
 class VocabCheckMasteredRequest(BaseModel):
-    group_id: uuid.UUID
+    group_id: str
     user_sentence: str
 
 
 class VocabStatusResponse(BaseModel):
-    group_id: uuid.UUID
+    group_id: str
     status: str
     is_mastered: bool
     feedback: Optional[str] = None
-
